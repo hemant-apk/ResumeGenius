@@ -83,5 +83,4 @@ ResumeGenius runs entirely on your device and communicates directly with the Goo
 
 * **PDF.js:** Distributed under the Apache License 2.0. Copyright © Mozilla and individual contributors.
 * **Fonts:** Outfit, IBM Plex Mono, and Plus Jakarta Sans are utilized via Google Fonts (Open Font License).
-=======
 
