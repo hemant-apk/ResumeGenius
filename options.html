@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ResumeGenius – Settings</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="options.css">
+</head>
+<body>
+  <div class="page">
+    <header class="page-header">
+      <div class="logo">
+        <div class="logo-icon">
+          <svg width="22" height="22" viewBox="0 0 20 20" fill="none">
+            <rect x="3" y="2" width="14" height="16" rx="2" stroke="#00d4ff" stroke-width="1.5"/>
+            <path d="M6 7h8M6 10h8M6 13h5" stroke="#00d4ff" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div>
+          <div class="logo-text">Resume<span class="accent">Genius</span></div>
+          <div class="logo-sub">Settings & Resume Manager</div>
+        </div>
+      </div>
+      <div id="status-chip" class="status-chip"></div>
+    </header>
+
+    <main class="main">
+
+      <!-- ── Gemini AI Settings ── -->
+      <section class="card">
+        <div class="card-header">
+          <div class="card-title">
+            <span class="card-icon">⚡</span>
+            Gemini AI Settings
+          </div>
+          <span class="fetch-badge" id="fetch-models-btn" title="Click to fetch the latest available models from your API key">Fetch Latest Models</span>
+        </div>
+        <div class="card-body" style="gap: 16px;">
+          <!-- Step 1: Instructions -->
+          <div class="settings-group">
+            <label class="group-label">1. Get Google Gemini API Key</label>
+            <p class="hint">
+              ResumeGenius utilizes Google's official Gemini API. To obtain a free API key:
+            </p>
+            <ul class="steps-list">
+              <li>Visit <a href="https://aistudio.google.com/" target="_blank" class="link-inline">Google AI Studio ↗</a>.</li>
+              <li>Sign in with your Google Account and click the prominent <strong>"Get API key"</strong> button.</li>
+              <li>Create a new API key (100% free for individual use).</li>
+              <li>Copy and paste your key in the field below.</li>
+            </ul>
+          </div>
+
+          <div class="divider-line"></div>
+
+          <!-- Step 2: Input Key -->
+          <div class="settings-group">
+            <label class="group-label" for="api-key-input">2. Enter API Key</label>
+            <div class="input-row">
+              <input type="password" id="api-key-input" class="input" placeholder="AIzaSy..." autocomplete="off" spellcheck="false">
+              <button class="btn btn-ghost" id="toggle-key">Show</button>
+            </div>
+            <div class="input-actions" style="margin-top: 2px;">
+              <button class="btn btn-primary" id="save-key-btn">Save Key</button>
+              <button class="btn btn-danger" id="clear-key-btn">Clear</button>
+              <div class="key-status" id="key-status"></div>
+            </div>
+          </div>
+
+          <div class="divider-line"></div>
+
+          <!-- Step 3: Model Selection -->
+          <div class="settings-group">
+            <div class="group-header">
+              <label class="group-label" for="model-select">3. Select Gemini Model</label>
+            </div>
+            <p class="hint">
+              Choose the model to power your resume parsing, cover letter writing, and automated form filling.
+            </p>
+            <div class="select-row">
+              <select id="model-select" class="select">
+                <option value="gemini-3.1-flash-lite" selected>Gemini 3.1 Flash Lite (Recommended — Free Tier, extremely fast & highly efficient)</option>
+                <option value="gemini-3.1-flash-lite-preview">Gemini 3.1 Flash Lite Preview (Free Tier, early preview of ultra-lightweight model)</option>
+                <option value="gemini-2.5-flash">Gemini 2.5 Flash (Free Tier, fast & highly intelligent)</option>
+                <option value="gemini-2.5-pro">Gemini 2.5 Pro (Pay-as-you-go, high-reasoning complex tasks)</option>
+                <option value="gemini-2.0-flash">Gemini 2.0 Flash (Free Tier, highly responsive & fast)</option>
+                <option value="gemini-2.0-flash-lite">Gemini 2.0 Flash-Lite (Free Tier, low latency & efficient)</option>
+                <option value="gemini-1.5-flash">Gemini 1.5 Flash (Free Tier, legacy fast model)</option>
+                <option value="gemini-1.5-flash-8b">Gemini 1.5 Flash-8B (Free Tier, legacy ultra-lightweight)</option>
+                <option value="gemini-1.5-pro">Gemini 1.5 Pro (Legacy, high reasoning model)</option>
+              </select>
+            </div>
+            <p class="hint model-tip">
+              💡 <strong>Free Tier Choice:</strong> We highly recommend using <strong>Gemini 3.1 Flash Lite</strong> in Google AI Studio. It is <strong>100% free</strong>, processes resumes instantly, and excels at understanding form contexts.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── Resume Upload ── -->
+      <section class="card">
+        <div class="card-header">
+          <div class="card-title">
+            <span class="card-icon">📄</span>
+            Resume
+          </div>
+          <div id="resume-loaded-badge" class="badge hidden"></div>
+        </div>
+        <div class="card-body">
+          <p class="hint">Your resume is stored locally on your device. It will be parsed by Gemini AI to extract structured data for form filling.</p>
+
+          <!-- Upload zone -->
+          <div class="upload-zone" id="upload-zone">
+            <div class="upload-icon">⬆</div>
+            <div class="upload-text">Drop your resume here or <span class="link-inline">browse</span></div>
+            <div class="upload-sub">PDF, TXT, or DOCX supported</div>
+            <input type="file" id="file-input" accept=".pdf,.txt,.doc,.docx" style="display:none">
+          </div>
+
+          <div class="divider"><span>or paste resume text</span></div>
+
+          <textarea id="resume-text" class="textarea" placeholder="Paste your resume text here…" rows="8"></textarea>
+
+          <div class="parse-actions">
+            <button class="btn btn-primary" id="parse-btn">
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 1v6M7 7l-2.5-2.5M7 7l2.5-2.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M2 10v1.5A1.5 1.5 0 003.5 13h7a1.5 1.5 0 001.5-1.5V10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+              Parse with Gemini AI
+            </button>
+            <button class="btn btn-ghost" id="clear-resume-btn">Clear Resume</button>
+          </div>
+
+          <div id="parse-progress" class="progress-box hidden">
+            <div class="spinner"></div>
+            <span id="parse-msg">Parsing resume…</span>
+          </div>
+          <div id="parse-error" class="error-box hidden"></div>
+        </div>
+      </section>
+
+      <!-- ── Parsed Resume Preview ── -->
+      <section class="card" id="parsed-preview-card" style="display:none">
+        <div class="card-header">
+          <div class="card-title">
+            <span class="card-icon">✦</span>
+            Parsed Data
+          </div>
+          <span class="badge-success-sm">AI Extracted</span>
+        </div>
+        <div class="card-body">
+          <div id="parsed-preview" class="parsed-preview"></div>
+        </div>
+      </section>
+
+      <!-- ── Privacy note ── -->
+      <section class="card privacy-card">
+        <div class="card-header">
+          <div class="card-title"><span class="card-icon">🔒</span> Privacy</div>
+        </div>
+        <div class="card-body">
+          <ul class="privacy-list">
+            <li>✓ Resume data stored only in <code>chrome.storage.local</code> — never on our servers</li>
+            <li>✓ Contact info (name, email, phone) is filled locally — not sent to Gemini</li>
+            <li>✓ Gemini API calls use your own API key sent directly to Google</li>
+            <li>✓ Job logs stored locally only — exportable as CSV anytime</li>
+          </ul>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <script src="options.js"></script>
+</body>
+</html>

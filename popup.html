@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ResumeGenius</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div class="app">
+
+    <!-- Header -->
+    <header class="header">
+      <div class="logo">
+        <div class="logo-icon">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+            <rect x="3" y="2" width="14" height="16" rx="2" stroke="#00d4ff" stroke-width="1.5"/>
+            <path d="M6 7h8M6 10h8M6 13h5" stroke="#00d4ff" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <span class="logo-text">Resume<span class="logo-accent">Genius</span></span>
+      </div>
+      <div class="header-actions">
+        <div id="resume-badge" class="badge badge-warn hidden">No Resume</div>
+        <button class="btn btn-sm btn-ghost" id="settings-btn" title="Open Settings" style="padding: 4px 8px; display: inline-flex; align-items: center; gap: 4px;">
+          <svg width="12" height="12" viewBox="0 0 16 16" fill="none" style="flex-shrink: 0;">
+            <path d="M8 10a2 2 0 100-4 2 2 0 000 4z" stroke="currentColor" stroke-width="1.5"/>
+            <path d="M13 8a5 5 0 11-10 0 5 5 0 0110 0z" stroke="currentColor" stroke-width="1.5" stroke-dasharray="2 2"/>
+          </svg>
+          Settings
+        </button>
+      </div>
+    </header>
+
+    <!-- Tab bar -->
+    <nav class="tabs">
+      <button class="tab active" data-tab="apply">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M7 2v10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        Apply
+      </button>
+      <button class="tab" data-tab="jobs">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><rect x="1" y="4" width="12" height="9" rx="1.5" stroke="currentColor" stroke-width="1.5"/><path d="M5 4V3a2 2 0 014 0v1" stroke="currentColor" stroke-width="1.5"/></svg>
+        Find Jobs
+      </button>
+      <button class="tab" data-tab="log">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 3h10M2 7h7M2 11h5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        Log
+      </button>
+      <button class="tab" data-tab="resume">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><rect x="2" y="1" width="10" height="12" rx="1.5" stroke="currentColor" stroke-width="1.5"/><path d="M4 5h6M4 7.5h6M4 10h3" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+        Resume
+      </button>
+    </nav>
+
+    <!-- ── APPLY TAB ── -->
+    <section class="panel active" id="panel-apply">
+      <div class="page-status" id="page-status">
+        <div class="status-indicator">
+          <div class="status-dot" id="status-dot"></div>
+          <div class="status-info">
+            <div class="status-title" id="status-title">Scanning page…</div>
+            <div class="status-sub" id="status-sub"></div>
+          </div>
+        </div>
+      </div>
+
+      <div id="apply-empty" class="empty-state hidden">
+        <div class="empty-icon">🔍</div>
+        <div class="empty-title">No job form detected</div>
+        <div class="empty-desc">Navigate to a job application page and click Apply, or use the Find Jobs tab.</div>
+      </div>
+
+      <div id="apply-form" class="hidden">
+        <div class="section-label">Detected Fields</div>
+        <div id="fields-list" class="fields-list"></div>
+
+        <div class="action-row">
+          <button class="btn btn-primary" id="autofill-btn">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7l3.5 3.5L12 3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Auto-Fill Form
+          </button>
+          <button class="btn btn-ghost" id="cover-letter-btn">Cover Letter</button>
+        </div>
+
+        <div id="fill-result" class="result-box hidden"></div>
+
+        <div class="log-prompt hidden" id="log-prompt">
+          <div class="log-prompt-text">Log this application?</div>
+          <div class="log-prompt-actions">
+            <button class="btn btn-sm btn-primary" id="log-yes-btn">Yes, Log It</button>
+            <button class="btn btn-sm btn-ghost" id="log-no-btn">Skip</button>
+          </div>
+        </div>
+
+        <!-- Cover letter modal -->
+        <div class="cover-letter-box hidden" id="cover-letter-box">
+          <div class="cl-header">
+            <span>✦ Cover Letter</span>
+            <button class="icon-btn" id="cl-close">✕</button>
+          </div>
+          <div class="cl-content" id="cl-content"></div>
+          <div class="cl-actions">
+            <button class="btn btn-sm btn-primary" id="cl-copy">Copy</button>
+            <button class="btn btn-sm btn-ghost" id="cl-regen">Regenerate</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── FIND JOBS TAB ── -->
+    <section class="panel" id="panel-jobs">
+      <div class="find-header">
+        <button class="btn btn-primary btn-full" id="find-jobs-btn">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="6" cy="6" r="4" stroke="currentColor" stroke-width="1.5"/><path d="M9.5 9.5L12 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+          Find Jobs Matching My Resume
+        </button>
+      </div>
+      <div id="jobs-loading" class="loader-row hidden">
+        <div class="spinner"></div>
+        <span>Analyzing your profile…</span>
+      </div>
+      <div id="jobs-list" class="jobs-list"></div>
+    </section>
+
+    <!-- ── LOG TAB ── -->
+    <section class="panel" id="panel-log">
+      <div class="log-header">
+        <div class="log-count"><span id="log-count">0</span> applications</div>
+        <button class="btn btn-sm btn-ghost" id="export-btn">Export CSV</button>
+      </div>
+      <div id="log-empty" class="empty-state hidden">
+        <div class="empty-icon">📋</div>
+        <div class="empty-title">No applications yet</div>
+        <div class="empty-desc">Fill and submit job applications to build your log.</div>
+      </div>
+      <div id="log-list" class="log-list"></div>
+    </section>
+
+    <!-- ── RESUME TAB ── -->
+    <section class="panel" id="panel-resume">
+      <div id="no-resume" class="empty-state">
+        <div class="empty-icon">📄</div>
+        <div class="empty-title">No resume loaded</div>
+        <div class="empty-desc">Open Settings to upload your resume and add your Gemini API key.</div>
+        <button class="btn btn-primary" id="go-settings-btn">Open Settings</button>
+      </div>
+      <div id="resume-preview" class="resume-preview hidden"></div>
+    </section>
+
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>
