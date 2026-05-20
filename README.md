@@ -63,7 +63,7 @@ ResumeGenius runs entirely on your device and communicates directly with the Goo
 4. **Complete your profile:** Type your real name, email, phone, location, and social links in the empty input fields. These are saved **100% locally** in `chrome.storage.local`.
 
 ### 4. Apply to Jobs Automatically
-1. Navigate to any job application form (e.g. Lever, Greenhouse, or standard job boards).
+1. Navigate to any job application form.
 2. Open the ResumeGenius popup inside your tab.
 3. Click **"Autofill Form"** — the extension will automatically match the fields and populate your details in the webpage!
 
